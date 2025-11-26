@@ -1,0 +1,17 @@
+/* navbar and layout */
+.nav{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:linear-gradient(90deg,#ffffff, #fbfdff);border-bottom:1px solid rgba(15,23,42,0.04);box-shadow:0 2px 8px rgba(12,18,24,0.03)}
+.nav-left{display:flex;align-items:center;gap:12px}
+.brand{font-weight:700;font-size:1.2rem;color:var(--accent)}
+.nav-right{display:flex;gap:12px;align-items:center}
+.nav-link{color:var(--accent);padding:8px;border-radius:8px;transition:background .12s ease}
+.nav-link:hover{background:rgba(37,99,235,0.06)}
+.nav-user{font-size:0.95rem;color:var(--muted)}
+
+/* small layout helpers */
+.container{max-width:1100px;margin:28px auto;padding:0 20px}
+
+@media (max-width:600px){
+	.nav{padding:12px}
+	.brand{font-size:1rem}
+	.nav-right{gap:8px}
+}
