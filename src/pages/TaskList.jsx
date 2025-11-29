@@ -8,6 +8,9 @@ import { filteredSortedTask } from "../utils/filters.utility.js";
 export default function TaskList() {
   const [tasks, setTasks] = useState([]);
 
+
+  const [isTaskUpdate , setTaskUpdate] = useState(false)
+
   const [loading, setLoading] = useState(true);
   // console.log(tasks)
   // Filters
@@ -60,7 +63,9 @@ export default function TaskList() {
         }
       );
 
-      setTasks((tasks) => {
+      setTaskUpdate(true)
+
+      setTasks(() => {
         
         return tasks.map((item) => {
           return (
@@ -76,7 +81,7 @@ export default function TaskList() {
 
   useEffect(() => {
     fetchTasks();
-  }, []);
+  }, [isTaskUpdate]);
 
   const handleDelete = async (id) => {
     if (!confirm("Delete task?")) return;
