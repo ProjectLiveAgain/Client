@@ -11,8 +11,18 @@
 .task-meta{display:flex;gap:8px;align-items:center}
 .priority{background:rgba(16,185,129,0.08);color:#059669;padding:6px 8px;border-radius:8px;font-size:0.85rem}
 .status{background:rgba(37,99,235,0.08);color:var(--accent);padding:6px 8px;border-radius:8px;font-size:0.85rem}
+.task-complete{background:#057f3199; color: var(--card);padding:6px 8px;border-radius:8px;font-size:0.85rem}
+.done{background-color:var(--done); border: 1px solid var(--done); color: var(--card); padding:6px 8px; border-radius:8px;font-size:0.85rem}
+.task-pending{background:var(--pending); color: #b1893f; padding:6px 8px;border-radius:8px;font-size:0.85rem}
 .task-desc{color:var(--muted);flex:1}
 .task-footer{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
 .task-footer small{color:var(--muted)}
-
+.completed{ text-decoration: line-through; }
+.task-card.completed .task-header,
+.task-card.completed .task-desc,
+.task-card.completed small,
+.task-card.completed .priority,
+.task-card.completed .status {
+  opacity: 0.5;
+}
 @media(max-width:640px){.tasks-grid{grid-template-columns:1fr}}

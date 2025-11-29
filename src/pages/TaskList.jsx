@@ -7,8 +7,9 @@ import { filteredSortedTask } from "../utils/filters.utility.js";
 
 export default function TaskList() {
   const [tasks, setTasks] = useState([]);
-  const [loading, setLoading] = useState(true);
 
+  const [loading, setLoading] = useState(true);
+  // console.log(tasks)
   // Filters
   let [search, setSearch] = useState("");
   // const [searchdata,setSearchData] = useState(tasks)
@@ -18,13 +19,19 @@ export default function TaskList() {
 
   // prority Med to High State
   const [sortorder, setSortOrder] = useState(null);
-  console.log(sortorder);
+
+  //STATUS STATE
+  const [status, setStatus] = useState("All");
+  // const [filterStatus, setfilterStatus] = useState([])
+
+  //  let settingstatus = setfilterStatus( tasks.filter((item) => item.status === "Completed"))
+
+  //  console.log(completedTasks)
+  console.log(status);
 
   const importFilter = useMemo(() => {
-    return filteredSortedTask(tasks, search, priority, sortorder);
-  }, [tasks, search, priority, sortorder]);
-
-  // console.log(sortedTasks)
+    return filteredSortedTask(tasks, search, priority, sortorder, status);
+  }, [tasks, search, priority, sortorder, status]);
 
   const fetchTasks = async () => {
     try {
@@ -34,6 +41,36 @@ export default function TaskList() {
       console.error(err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  //Status Update Api Logic
+  const statusHandler = async (id) => {
+    try {
+      const token = localStorage.getItem("token");
+      console.log(token);
+      console.log(id);
+      let statusupdate = await axios.put(
+        `http://localhost:5000/api/tasks/${id}`,
+        { status: "Completed" },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setTasks((tasks) => {
+        
+        return tasks.map((item) => {
+          return (
+            // item._id===id ? {(status:'Completed')} : item
+            item._id === id ? {...tasks, status: "Completed" } : item
+          );
+        });
+      });
+    } catch (error) {
+      alert("Error on Status Update");
     }
   };
 
@@ -110,6 +147,19 @@ export default function TaskList() {
             <option value={"low"}>Low - Medium - High</option>
           </select>
         </div>
+
+        {/* Sort by Status  */}
+        <div className="priorityFilter line-height">
+          <h5 className="top-head">Task Status</h5>
+          <select
+            className="priorityList"
+            onChange={(e) => setStatus(e.target.value)}
+          >
+            <option>All</option>
+            <option>Pending</option>
+            <option>Completed</option>
+          </select>
+        </div>
       </div>
 
       {importFilter.length === 0 ? (
@@ -117,7 +167,12 @@ export default function TaskList() {
       ) : (
         <div className="tasks-grid">
           {importFilter.map((item) => (
-            <TaskCard key={item._id} task={item} onDelete={handleDelete} />
+            <TaskCard
+              key={item._id}
+              task={item}
+              onDelete={handleDelete}
+              statusUpdate={statusHandler}
+            />
           ))}
         </div>
       )}
